@@ -26,13 +26,17 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		setupStage(stage);
+		stage.show();
+	}
+	public Stage setupStage(Stage stage){
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 500, Color.BLUE);
 		scene.getStylesheets().add(Main.class.getResource("stylesheet.css").toExternalForm());
 		stage.setTitle("Back to Earth!");
 		addWelcomeText(root);
 		stage.setScene(scene);
-		stage.show();
+		return stage;
 	}
 	public Group addWelcomeText(Group group){
 		Text text = new Text();

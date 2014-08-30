@@ -1,0 +1,6 @@
+#splash-page {
+    -fx-font: 50px Tahoma;
+    -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, black 0%, purple 50%, black 100%);
+    -fx-stroke: black;
+    -fx-stroke-width: 1;
+}

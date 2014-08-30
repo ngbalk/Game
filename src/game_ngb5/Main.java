@@ -1,6 +1,8 @@
 package game_ngb5;
 import java.awt.RenderingHints.Key;
 
+
+
 import javafx.scene.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
@@ -11,6 +13,8 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import javafx.scene.text.*;
+import javafx.css.*;
 
 public class Main extends Application{
 
@@ -24,10 +28,20 @@ public class Main extends Application{
 	public void start(Stage stage) throws Exception {
 		Group root = new Group();
 		Scene scene = new Scene(root, 500, 500, Color.BLUE);
+		scene.getStylesheets().add(Main.class.getResource("stylesheet.css").toExternalForm());
 		stage.setTitle("Back to Earth!");
+		addWelcomeText(root);
 		stage.setScene(scene);
 		stage.show();
-		
+	}
+	public Group addWelcomeText(Group group){
+		Text text = new Text();
+		text.setText("Back to Earth!");
+		text.setId("splash-page");
+		text.setY(70);
+		text.setX(100);
+		group.getChildren().add(text);
+		return group;
 	}
 
 }

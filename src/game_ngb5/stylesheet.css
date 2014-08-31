@@ -1,6 +1,22 @@
 #splash-page {
-    -fx-font: 50px Tahoma;
+    -fx-font: 50px Arial;
     -fx-fill: linear-gradient(from 0% 0% to 100% 200%, repeat, black 0%, purple 50%, black 100%);
     -fx-stroke: black;
     -fx-stroke-width: 1;
+}
+#welcome-background {
+    -fx-background-image: url("splash_image.jpg");
+    -fx-background-repeat: stretch;   
+    -fx-background-size: 500 500;
+    -fx-background-position: center center;
+}
+#start-button {
+	-fx-font: 20px Arial;
+	-fx-base: #330066;
+}
+#play-scene {
+	-fx-background-image: url("space_image.jpg");
+	-fx-background-repeat: stretch;   
+    -fx-background-size: 500 500;
+    -fx-background-position: center center;
 }

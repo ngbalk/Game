@@ -32,6 +32,7 @@ import javafx.css.*;
 public class Main extends Application{
 	Scene myCurrentScene;
 	Stage myStage;
+	Hero myHero;
 	
 	
 	public static void main(String[] args) {
@@ -105,9 +106,11 @@ public class Main extends Application{
 	
 	public Hero buildHero(Pane root){
 		Hero hero = new Hero(root);
+		myHero = hero;
 		hero.requestFocus();
 		return hero;
 	}
+
 	
 	
 	

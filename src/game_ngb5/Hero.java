@@ -1,6 +1,9 @@
 package game_ngb5;
 
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 import com.sun.javafx.geom.BaseBounds;
 import com.sun.javafx.geom.transform.BaseTransform;
 import com.sun.javafx.jmx.MXNodeAlgorithm;
@@ -26,6 +29,7 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class Hero extends ImageView{
+	Deque<Missile> myMissiles;
 	Pane myRoot;
 	boolean myLifeStatus;
 	Integer myAmmo;
@@ -34,6 +38,7 @@ public class Hero extends ImageView{
 		myRoot = root;
 		myLifeStatus = true;
 		myAmmo = 100;
+		myMissiles = new ArrayDeque<Missile>();
 		Image heroImage = new Image(this.getClass().getResource("hero_sprite.png").toExternalForm());
 		this.setImage(heroImage);
 		this.setLayoutX(200);
@@ -101,7 +106,9 @@ public class Hero extends ImageView{
 	public void fireMissile(){
 		System.out.println("Firing missile...");
 		Missile missile = new Missile(this);
+		myMissiles.push(missile);
 		missile.fire();
+		
 		
 	}
 }

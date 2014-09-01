@@ -6,6 +6,7 @@ import com.sun.javafx.jmx.MXNodeAlgorithm;
 import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.event.Event;

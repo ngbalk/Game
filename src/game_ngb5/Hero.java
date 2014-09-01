@@ -15,12 +15,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
 
 public class Hero extends ImageView{
+	Pane myRoot;
 	boolean myLifeStatus;
 	Integer myAmmo;
 
-	public Hero(){
+	public Hero(Pane root){
+		myRoot = root;
 		myLifeStatus = true;
 		myAmmo = 100;
 		Image heroImage = new Image(this.getClass().getResource("hero_sprite.png").toExternalForm());
@@ -38,12 +41,15 @@ public class Hero extends ImageView{
 			public void handle(KeyEvent event) {
 				System.out.println("event detected");
 				if(event.getCode() == KeyCode.RIGHT){
-					System.out.println("Going Right...");
+					
 					moveRight();
 				}
 				if(event.getCode() == KeyCode.LEFT){
-					System.out.println("Going Left...");
+					
 					moveLeft();
+				}
+				if(event.getCode() == KeyCode.SPACE){
+					fireMissile();
 				}
 					
 			}
@@ -60,10 +66,18 @@ public class Hero extends ImageView{
 		
 	
 	public void moveRight(){
-		this.setLayoutX(this.getLayoutX() + 5);
+		if(this.getLayoutX() < 420){
+			System.out.println("Going Right...");
+			this.setLayoutX(this.getLayoutX() + 5);
+		}
+		System.out.println(this.getLayoutX());
 	}
 	public void moveLeft(){
-		this.setLayoutX(this.getLayoutX() - 5);
+		if(this.getLayoutX() > -5){
+			System.out.println("Going Left...");
+			this.setLayoutX(this.getLayoutX() - 5);
+		}	
+		System.out.println(this.getLayoutX());
 	}
 	public void isDead(){
 		myLifeStatus = false;
@@ -73,5 +87,10 @@ public class Hero extends ImageView{
 	}
 	public boolean hasAmmo(){
 		return myAmmo != 0;
+	}
+	public void fireMissile(){
+		Missile missile = new Missile(this);
+		myRoot.getChildren().add(missile);
+		
 	}
 }

@@ -99,12 +99,12 @@ public class Main extends Application{
 		root.setId("play-scene");
 		Scene playScene = new Scene(root, 500, 500);
 		playScene.getStylesheets().addAll(this.getClass().getResource("stylesheet.css").toExternalForm());
-		root.getChildren().add(buildHero());
+		root.getChildren().add(buildHero(root));
 		return playScene;
 	}
 	
-	public Hero buildHero(){
-		Hero hero = new Hero();
+	public Hero buildHero(Pane root){
+		Hero hero = new Hero(root);
 		hero.requestFocus();
 		return hero;
 	}

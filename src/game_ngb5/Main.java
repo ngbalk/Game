@@ -105,6 +105,7 @@ public class Main extends Application{
 	
 	public Hero buildHero(){
 		Hero hero = new Hero();
+		hero.requestFocus();
 		return hero;
 	}
 	

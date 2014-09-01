@@ -7,6 +7,10 @@ import java.awt.RenderingHints.Key;
 
 
 
+
+
+
+
 import javafx.event.*;
 import javafx.scene.*;
 import javafx.scene.paint.*;
@@ -17,6 +21,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Labeled;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -82,6 +87,7 @@ public class Main extends Application{
 			public void handle(ActionEvent arg0) {
 				myStage.setScene(buildPlayScene());
 				
+				
 			}
 			
 		});
@@ -89,11 +95,17 @@ public class Main extends Application{
 	}
 	
 	public Scene buildPlayScene(){
-		StackPane root = new StackPane();
+		Pane root = new Pane();
 		root.setId("play-scene");
 		Scene playScene = new Scene(root, 500, 500);
 		playScene.getStylesheets().addAll(this.getClass().getResource("stylesheet.css").toExternalForm());
+		root.getChildren().add(buildHero());
 		return playScene;
+	}
+	
+	public Hero buildHero(){
+		Hero hero = new Hero();
+		return hero;
 	}
 	
 	

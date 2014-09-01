@@ -32,7 +32,7 @@ public class Enemy extends ImageView {
 		myHP = 100;
 		myLevel = level;
 		myLifeStatus = true;
-		Image enemyImage = new Image(this.getClass().getResource("enemy_image.gif").toExternalForm());
+		Image enemyImage = new Image(this.getClass().getResource("enemy_image.png").toExternalForm());
 		this.setImage(enemyImage);
 		this.setX(250);
 		this.setY(250);
@@ -71,7 +71,7 @@ public class Enemy extends ImageView {
 		attackFlight.play();
 	}
 	public boolean checkAndHandleCollision(){
-        if(this.getLayoutBounds().intersects(myHero.myMissiles.peek().getLayoutBounds()) || this.getLayoutY() > 500)
+        if(this.getLayoutBounds().intersects(myHero.myMissiles.peek().getBoundsInLocal()) || this.getY() > 500)
                 {
         			System.out.println("collision detected");
         			System.out.println("  Enemy: " + this.getBoundsInLocal().toString());
@@ -84,30 +84,8 @@ public class Enemy extends ImageView {
 	}
 		
 	public void move(){
-		this.setLayoutY(this.getLayoutY()+10);
+		this.setY(this.getY()+10);
 	}
-//		Path path = new Path();
-//		path.getElements().add(new MoveTo(0, 30));
-//	    //path.getElements().add(new LineTo(0, 700));
-//		CubicCurveTo cc1 = new CubicCurveTo();
-//		cc1.setControlX1(600);
-//		cc1.setControlY1(300);
-//		cc1.setControlX2(-600);
-//		cc1.setControlY2(400);
-//		cc1.setX(0);
-//		cc1.setY(650);
-//	    path.getElements().add(cc1);
-//	    //path.getElements().add(new CubicCurveTo(250, 600, 0, 240, 380, 240));
-//	    path.setOpacity(0);
-//	    Group g = new Group();
-//	    myRoot.getChildren().add(g); 
-//	    g.getChildren().add(path);
-//		g.getChildren().add(this);
-//		PathTransition pathTransition = new PathTransition();
-//		pathTransition.setDuration(Duration.millis(6000));
-//		pathTransition.setPath(path);
-//		pathTransition.setNode(this);
-//		pathTransition.play();
-	}
+}
 	
 

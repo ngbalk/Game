@@ -41,8 +41,8 @@ public class Hero extends ImageView{
 		myMissiles = new ArrayDeque<Missile>();
 		Image heroImage = new Image(this.getClass().getResource("hero_sprite.png").toExternalForm());
 		this.setImage(heroImage);
-		this.setLayoutX(200);
-		this.setLayoutY(400);
+		this.setX(200);
+		this.setY(400);
 		buildEventListeners();
 		
 	}
@@ -81,18 +81,18 @@ public class Hero extends ImageView{
 	}
 	
 	public void moveRight(){
-		if(this.getLayoutX() < 420){
+		if(this.getX() < 420){
 			System.out.println("Going Right...");
-			this.setLayoutX(this.getLayoutX() + 5);
+			this.setX(this.getX() + 5);
 		}
-		System.out.println(this.getLayoutX());
+		System.out.println(this.getX());
 	}
 	public void moveLeft(){
-		if(this.getLayoutX() > -5){
+		if(this.getX() > -5){
 			System.out.println("Going Left...");
-			this.setLayoutX(this.getLayoutX() - 5);
+			this.setX(this.getX() - 5);
 		}	
-		System.out.println(this.getLayoutX());
+		System.out.println(this.getX());
 	}
 	public void isDead(){
 		myLifeStatus = false;

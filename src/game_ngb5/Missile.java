@@ -6,8 +6,10 @@ import com.sun.javafx.jmx.MXNodeAlgorithm;
 import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -32,26 +34,32 @@ public class Missile extends ImageView{
 		myLifeStatus = true;
 		Image missileImage = new Image(this.getClass().getResource("missile_image.gif").toExternalForm());
 		this.setImage(missileImage);
-		this.getTransforms().add(new Rotate(270, 0, 0));
-		this.setLayoutX(hero.getLayoutX() + 32);
-		this.setLayoutY(hero.getLayoutY() + 15);
+		this.setFitWidth(25);
+		this.setX(hero.getX());
+		this.setY(hero.getY());
+		myRoot.getChildren().add(this);
 	}
 	public void impact(){
 		myLifeStatus = false;
 	}
+	public void move(){
+		this.setY(this.getY()-10);
+	}
+
 	public void fire(){
-		Path path = new Path();
-		path.getElements().add(new MoveTo(35, 30));
-	    path.getElements().add(new LineTo(35, -500));
-	    Group g = new Group();
-	    myRoot.getChildren().add(g); 
-	    g.getChildren().add(path);
-		g.getChildren().add(this);
-		PathTransition pathTransition = new PathTransition();
-		pathTransition.setDuration(Duration.millis(1000));
-		pathTransition.setPath(path);
-		pathTransition.setNode(this);
-		pathTransition.play();
+		Timeline missileFlight = new Timeline();
+		missileFlight.setCycleCount(Animation.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				move();
+				
+			}
+			
+		});
+		missileFlight.getKeyFrames().add(kf);
+		missileFlight.play();
 	}
 
 }

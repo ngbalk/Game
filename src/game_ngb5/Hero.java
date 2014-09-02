@@ -2,6 +2,7 @@ package game_ngb5;
 
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 
 import com.sun.javafx.geom.BaseBounds;
@@ -29,7 +30,8 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class Hero extends ImageView{
-	Deque<Missile> myMissiles;
+	ArrayList<Missile> myMissiles;
+	ArrayList<Enemy> myEnemies;
 	Pane myRoot;
 	boolean myLifeStatus;
 	Integer myAmmo;
@@ -38,7 +40,8 @@ public class Hero extends ImageView{
 		myRoot = root;
 		myLifeStatus = true;
 		myAmmo = 100;
-		myMissiles = new ArrayDeque<Missile>();
+		myMissiles = new ArrayList<Missile>();
+		myEnemies = new ArrayList<Enemy>();
 		Image heroImage = new Image(this.getClass().getResource("hero_sprite.png").toExternalForm());
 		this.setImage(heroImage);
 		this.setX(200);
@@ -61,7 +64,6 @@ public class Hero extends ImageView{
 				}
 				if(event.getCode() == KeyCode.SPACE){
 					fireMissile();
-					dispatchEnemy();
 					
 				}
 					
@@ -74,23 +76,21 @@ public class Hero extends ImageView{
 		System.out.println(this.focusedProperty().toString());
 		System.out.println("handler created");
 	}
-			
+	
+
 		
-	public void dispatchEnemy(){
-		Enemy enemy = new Enemy(this, 1);
-	}
 	
 	public void moveRight(){
 		if(this.getX() < 420){
 			System.out.println("Going Right...");
-			this.setX(this.getX() + 5);
+			this.setX(this.getX() + 15);
 		}
 		System.out.println(this.getX());
 	}
 	public void moveLeft(){
 		if(this.getX() > -5){
 			System.out.println("Going Left...");
-			this.setX(this.getX() - 5);
+			this.setX(this.getX() - 15);
 		}	
 		System.out.println(this.getX());
 	}
@@ -106,7 +106,7 @@ public class Hero extends ImageView{
 	public void fireMissile(){
 		System.out.println("Firing missile...");
 		Missile missile = new Missile(this);
-		myMissiles.push(missile);
+		myMissiles.add(missile);
 		missile.fire();
 		
 		

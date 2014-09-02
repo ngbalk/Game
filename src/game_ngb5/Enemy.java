@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -23,19 +24,17 @@ public class Enemy extends ImageView {
 	Hero myHero;
 	Pane myRoot;
 	Integer myHP;
-	Integer myLevel;
 	boolean myLifeStatus;
 	
-	public Enemy(Hero hero, Integer level){
+	public Enemy(Hero hero, Integer xLoc){
 		myHero = hero;
 		myRoot = hero.myRoot;
 		myHP = 100;
-		myLevel = level;
 		myLifeStatus = true;
 		Image enemyImage = new Image(this.getClass().getResource("enemy_image.png").toExternalForm());
 		this.setImage(enemyImage);
-		this.setX(250);
-		this.setY(250);
+		this.setX(xLoc);
+		this.setY(-100);
 		//this.setLayoutX(250);
 		//this.setLayoutY(250);
 		myRoot.getChildren().add(this);
@@ -53,7 +52,7 @@ public class Enemy extends ImageView {
 	public void attack(){
 		Timeline attackFlight = new Timeline();
 		attackFlight.setCycleCount(Animation.INDEFINITE);
-		KeyFrame kf = new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>(){
+		KeyFrame kf = new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>(){
 
 			@Override
 			public void handle(ActionEvent event) {
@@ -71,20 +70,32 @@ public class Enemy extends ImageView {
 		attackFlight.play();
 	}
 	public boolean checkAndHandleCollision(){
-        if(this.getLayoutBounds().intersects(myHero.myMissiles.peek().getBoundsInLocal()) || this.getY() > 500)
-                {
-        			System.out.println("collision detected");
-        			System.out.println("  Enemy: " + this.getBoundsInLocal().toString());
-        			System.out.println("Missile: " + myHero.myMissiles.peek().getBoundsInLocal().toString());
-                    this.setVisible(false);
-                    myRoot.getChildren().remove(this);
-                    return true;
-                }
+		for(Missile missile : myHero.myMissiles){
+	        if((this.getLayoutBounds().intersects(missile.getBoundsInLocal()) || this.getY() > 1000)) // && myLifeStatus && missile.myLifeStatus)
+	                {
+	        			System.out.println("enemy hit");
+	        			//System.out.println("  Enemy: " + this.getBoundsInLocal().toString());
+	        			//System.out.println("Missile: " + missile.getBoundsInLocal().toString());
+	                    explode();
+	                    myLifeStatus = false;
+	                    return true;
+	                }
+		}
         return false;
 	}
 		
 	public void move(){
-		this.setY(this.getY()+10);
+		this.setY(this.getY()+5);
+	}
+	public void explode(){
+		Image explosionImage = new Image(this.getClass().getResource("explosion_image.gif").toExternalForm());
+		this.setImage(explosionImage);
+		this.setY(this.getY()-50);
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
+		ft.setFromValue(1.0);
+		ft.setToValue(0);
+		ft.play();
+		
 	}
 }
 	

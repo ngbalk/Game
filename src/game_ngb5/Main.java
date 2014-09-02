@@ -11,10 +11,19 @@ import java.awt.RenderingHints.Key;
 
 
 
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import javafx.event.*;
 import javafx.scene.*;
 import javafx.scene.paint.*;
 import javafx.scene.shape.*;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -27,6 +36,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.scene.text.*;
+import javafx.util.Duration;
 import javafx.css.*;
 
 public class Main extends Application{
@@ -44,6 +54,59 @@ public class Main extends Application{
 		myStage = stage;
 		setupStage(stage);
 		stage.show();
+		
+		
+	}
+	public void spawnEnemies(){
+		Integer[] firstLevelAttack = {50, 150, 250, 350, 450};
+		Queue<Integer> attackPattern = new LinkedList<Integer>();
+		loadPattern(firstLevelAttack, attackPattern);
+		Timeline spawning = new Timeline();
+		spawning.setCycleCount(Animation.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.millis(1500), new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				Integer xLoc = attackPattern.poll();
+				attackPattern.add(xLoc);
+				Enemy enemy = new Enemy(myHero, xLoc);
+				myHero.myEnemies.add(enemy);
+			}
+		});
+		spawning.getKeyFrames().add(kf);
+		spawning.play();
+	}
+	public Queue<Integer> loadPattern(Integer[] pattern, Queue<Integer> q){
+		for(Integer i : pattern){
+			q.add(i);
+		}
+		return q;
+	}
+	
+	public void cleaningService(){
+		Timeline cleaning = new Timeline();
+		cleaning.setCycleCount(Animation.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				cleanDeadEnemiesAndMissiles();
+			}
+		});
+		cleaning.getKeyFrames().add(kf);
+		cleaning.play();
+		
+	}
+	
+	public void cleanDeadEnemiesAndMissiles(){
+		for(Enemy enemy : myHero.myEnemies){
+			if(!enemy.myLifeStatus){
+				enemy.setX(5000);
+			}
+		}
+		for(Missile missile : myHero.myMissiles){
+			if(!missile.myLifeStatus){
+				missile.setX(5000);
+			}
+		}
 	}
 	public Stage setupStage(Stage stage){
 		stage.setMaxHeight(500);
@@ -87,6 +150,8 @@ public class Main extends Application{
 			@Override
 			public void handle(ActionEvent arg0) {
 				myStage.setScene(buildPlayScene());
+				spawnEnemies();
+				cleaningService();
 				
 				
 			}

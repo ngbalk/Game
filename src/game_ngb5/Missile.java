@@ -26,16 +26,18 @@ import javafx.scene.shape.Path;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 public class Missile extends ImageView{
+	Hero myHero;
 	Integer myDamage;
 	boolean myLifeStatus;
 	Pane myRoot;
 	public Missile(Hero hero){
+		myHero = hero;
 		myRoot = hero.myRoot;
 		myLifeStatus = true;
 		Image missileImage = new Image(this.getClass().getResource("missile_image.gif").toExternalForm());
 		this.setImage(missileImage);
 		this.setFitWidth(25);
-		this.setX(hero.getX());
+		this.setX(hero.getX() + 30);
 		this.setY(hero.getY());
 		myRoot.getChildren().add(this);
 	}
@@ -54,6 +56,10 @@ public class Missile extends ImageView{
 			@Override
 			public void handle(ActionEvent event) {
 				move();
+				if(checkAndHandleCollision()){
+					System.out.println("missile hit");
+					missileFlight.stop();
+				}
 				
 			}
 			
@@ -61,5 +67,16 @@ public class Missile extends ImageView{
 		missileFlight.getKeyFrames().add(kf);
 		missileFlight.play();
 	}
+	public boolean checkAndHandleCollision(){
+		for(Enemy enemy: myHero.myEnemies){
+			if(this.intersects(enemy.getBoundsInLocal())){
+					this.setVisible(false);
+					this.myLifeStatus = false;
+					return true;
+				}
+		}
+		return false;
+	}
+
 
 }

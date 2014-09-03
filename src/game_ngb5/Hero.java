@@ -125,7 +125,7 @@ public class Hero extends ImageView{
 			@Override
 			public void handle(ActionEvent event) {
 				if(checkAndHandleCollision() && myLifeStatus){
-					System.out.println("hero destroyed");
+					
 					myLifeStatus = false;
 					explode();
 					

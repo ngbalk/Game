@@ -35,8 +35,6 @@ public class Enemy extends ImageView {
 		this.setImage(enemyImage);
 		this.setX(xLoc);
 		this.setY(-100);
-		//this.setLayoutX(250);
-		//this.setLayoutY(250);
 		myRoot.getChildren().add(this);
 		attack();
 		
@@ -73,10 +71,8 @@ public class Enemy extends ImageView {
 		for(Missile missile : myHero.myMissiles){
 	        if((this.getLayoutBounds().intersects(missile.getBoundsInLocal()) || this.getY() > 1000)) // && myLifeStatus && missile.myLifeStatus)
 	                {
-	        			System.out.println("enemy hit");
-	        			//System.out.println("  Enemy: " + this.getBoundsInLocal().toString());
-	        			//System.out.println("Missile: " + missile.getBoundsInLocal().toString());
-	                    explode();
+	        			
+	        			explode();
 	                    myLifeStatus = false;
 	                    return true;
 	                }

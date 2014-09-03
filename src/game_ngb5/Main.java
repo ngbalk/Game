@@ -45,6 +45,7 @@ public class Main extends Application{
 	Stage myStage;
 	Hero myHero;
 	Integer myGameMillis;
+	Timeline myGameLoop;
 	
 	
 	public static void main(String[] args) {
@@ -99,15 +100,12 @@ public class Main extends Application{
 		stage.setMinWidth(500);
 		stage.setMinHeight(500);
 		Pane gp = new Pane();
-		//StackPane sp = new StackPane();
 		gp.setId("welcome-background");
-		//root.getChildren().add(background);
 		Scene scene = new Scene(gp, 500, 500);
 		scene.getStylesheets().add(Main.class.getResource("stylesheet.css").toExternalForm());
 		stage.setTitle("Back to Earth!");
 		addWelcomeText(gp);
 		addStartButton(gp);
-		//root.getChildren().add(group);
 		stage.setScene(scene);
 		myCurrentScene = scene;
 		return stage;
@@ -130,6 +128,7 @@ public class Main extends Application{
 		myGameMillis = 0;
 		cleaningService();
 		Timeline gameLoop = new Timeline();
+		myGameLoop = gameLoop;
 		gameLoop.setCycleCount(Animation.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>(){
 			@Override
@@ -148,53 +147,77 @@ public class Main extends Application{
 					spawnEnemies2.killSpawning();
 					myHero.myLevel ++;
 				}
-				myGameMillis += 10;
+				
 				if(myHero.myLevel == 3){
 					spawnEnemies1.killSpawning();
 					spawnEnemies2.killSpawning();
 					endGameHandler();
 				}
 				if(!myHero.myLifeStatus){
+					
 					spawnEnemies1.killSpawning();
+				
 					spawnEnemies2.killSpawning();
 					endGameHandler();
 				}
+				myGameMillis += 10;
 			}
 		});
 		gameLoop.getKeyFrames().add(kf);
 		gameLoop.play();
 	}
 	public void endGameHandler(){
+		myGameLoop.stop();
 		myGameMillis = 0;
+		System.out.println("hero destroyed");
 		Timeline endGame = new Timeline();
 		endGame.setCycleCount(Animation.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				if(myGameMillis == 3000){
+				
+				if(myGameMillis == 3010){
 					Text finalText;
+					Text finalScore;
 					if(myHero.myLifeStatus){
 						finalText = new Text("Welcome Home, Hero!");
+						finalText.setX(155);
+						finalText.setY(250);
+						finalScore = new Text(10, 10 , "Score: " + myHero.myScore.toString());
+						finalScore.setX(155);
+						finalScore.setY(280);
 					}
 					else{
-						finalText = new Text(10, 20, "You Lose!");
+						finalText = new Text("You Lose!");
+						finalText.setX(155);
+						finalText.setY(250);
+						finalScore = new Text("Score: " + myHero.myScore.toString());
+						finalScore.setX(155);
+						finalScore.setY(300);
 					}
+					
 					finalText.setId("splash-page");
+					finalScore.setId("splash-page");
 					myRoot.getChildren().add(finalText);
+					myRoot.getChildren().add(finalScore);
 					
 				}
 				
-				if(myGameMillis == 8000){
+				if(myGameMillis == 8010){
 					try {
-						start(new Stage());
+						setupStage(myStage);
+						myGameMillis = 0;
+						endGame.stop();
+						return;
 					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
+
 					}
 				}
 				myGameMillis += 1000;
 			}
 		});
+		endGame.getKeyFrames().add(kf);
+		endGame.play();
 	}
 	
 	public void addStartButton(Pane gp){

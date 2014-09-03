@@ -11,6 +11,9 @@ import com.sun.javafx.jmx.MXNodeAlgorithm;
 import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -35,6 +38,8 @@ public class Hero extends ImageView{
 	Pane myRoot;
 	boolean myLifeStatus;
 	Integer myAmmo;
+	Integer myScore;
+	Integer myLevel;
 
 	public Hero(Pane root){
 		myRoot = root;
@@ -47,6 +52,7 @@ public class Hero extends ImageView{
 		this.setX(200);
 		this.setY(400);
 		buildEventListeners();
+		collisionsEngine();
 		
 	}
 	public void buildEventListeners(){
@@ -109,6 +115,43 @@ public class Hero extends ImageView{
 		myMissiles.add(missile);
 		missile.fire();
 		
+		
+	}
+	public void collisionsEngine(){
+		Timeline missileFlight = new Timeline();
+		missileFlight.setCycleCount(Animation.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.millis(20), new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				if(checkAndHandleCollision() && myLifeStatus){
+					System.out.println("hero destroyed");
+					explode();
+					myLifeStatus = false;
+				}
+				
+			}
+			
+		});
+		missileFlight.getKeyFrames().add(kf);
+		missileFlight.play();
+	}
+	public boolean checkAndHandleCollision(){
+		for(Enemy enemy: this.myEnemies){
+			if(this.intersects(enemy.getBoundsInLocal())){
+					return true;
+				}
+		}
+		return false;
+	}
+	public void explode(){
+		Image explosionImage = new Image(this.getClass().getResource("explosion_image.gif").toExternalForm());
+		this.setImage(explosionImage);
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
+		this.setY(this.getY()-30);
+		ft.setFromValue(1.0);
+		ft.setToValue(0);
+		ft.play();
 		
 	}
 }

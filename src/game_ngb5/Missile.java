@@ -42,6 +42,7 @@ public class Missile extends ImageView{
 		myRoot.getChildren().add(this);
 	}
 	public void impact(){
+		myHero.myScore = myHero.myScore + (1000 * myHero.myLevel);
 		myLifeStatus = false;
 	}
 	public void move(){
@@ -71,7 +72,7 @@ public class Missile extends ImageView{
 		for(Enemy enemy: myHero.myEnemies){
 			if(this.intersects(enemy.getBoundsInLocal())){
 					this.setVisible(false);
-					this.myLifeStatus = false;
+					impact();
 					return true;
 				}
 		}

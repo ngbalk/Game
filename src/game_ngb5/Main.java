@@ -40,9 +40,11 @@ import javafx.util.Duration;
 import javafx.css.*;
 
 public class Main extends Application{
+	Pane myRoot;
 	Scene myCurrentScene;
 	Stage myStage;
 	Hero myHero;
+	Integer myGameMillis;
 	
 	
 	public static void main(String[] args) {
@@ -57,24 +59,7 @@ public class Main extends Application{
 		
 		
 	}
-	public void spawnEnemies(){
-		Integer[] firstLevelAttack = {50, 150, 250, 350, 450};
-		Queue<Integer> attackPattern = new LinkedList<Integer>();
-		loadPattern(firstLevelAttack, attackPattern);
-		Timeline spawning = new Timeline();
-		spawning.setCycleCount(Animation.INDEFINITE);
-		KeyFrame kf = new KeyFrame(Duration.millis(1500), new EventHandler<ActionEvent>(){
-			@Override
-			public void handle(ActionEvent event) {
-				Integer xLoc = attackPattern.poll();
-				attackPattern.add(xLoc);
-				Enemy enemy = new Enemy(myHero, xLoc);
-				myHero.myEnemies.add(enemy);
-			}
-		});
-		spawning.getKeyFrames().add(kf);
-		spawning.play();
-	}
+
 	public Queue<Integer> loadPattern(Integer[] pattern, Queue<Integer> q){
 		for(Integer i : pattern){
 			q.add(i);
@@ -137,7 +122,78 @@ public class Main extends Application{
 		gp.getChildren().add(text);
 	}
 	
-	
+	public void gameHandler(){
+		myHero.myScore = 0;
+		myHero.myLevel = 1;
+		Spawner spawnEnemies1 = new Spawner(myHero);
+		Spawner spawnEnemies2 = new Spawner(myHero);
+		myGameMillis = 0;
+		cleaningService();
+		Timeline gameLoop = new Timeline();
+		gameLoop.setCycleCount(Animation.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.millis(10), new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				if(myGameMillis == 0){
+					Spawner spawnEnemies1 = new Spawner(myHero);
+					spawnEnemies1.playSpawning();
+				}
+				if(myGameMillis == 45000){
+					spawnEnemies1.killSpawning();
+					myHero.myLevel++;
+					Spawner spawnEnemies2 = new Spawner(myHero);
+					spawnEnemies2.playSpawning();
+				}
+				if(myGameMillis == 90000){
+					spawnEnemies2.killSpawning();
+					myHero.myLevel ++;
+				}
+				myGameMillis += 10;
+				if(myHero.myLevel == 3){
+					spawnEnemies2.killSpawning();
+					//end game and display score
+				}
+				if(!myHero.myLifeStatus){
+					spawnEnemies2.killSpawning();
+					//end game and display score
+				}
+			}
+		});
+		gameLoop.getKeyFrames().add(kf);
+		gameLoop.play();
+	}
+	public void endGameHandler(){
+		myGameMillis = 0;
+		Timeline endGame = new Timeline();
+		endGame.setCycleCount(Animation.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>(){
+			@Override
+			public void handle(ActionEvent event) {
+				if(myGameMillis > 3000){
+					Text finalText;
+					if(myHero.myLifeStatus){
+						finalText = new Text("Welcome Home, Hero!");
+					}
+					else{
+						finalText = new Text(10, 20, "You Lose!");
+					}
+					finalText.setId("splash-page");
+					myRoot.getChildren().add(finalText);
+					
+				}
+				
+				if(myGameMillis > 8000){
+					try {
+						start(new Stage());
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				myGameMillis += 1000;
+			}
+		});
+	}
 	
 	public void addStartButton(Pane gp){
 		Button startButton = new Button();
@@ -149,9 +205,10 @@ public class Main extends Application{
 
 			@Override
 			public void handle(ActionEvent arg0) {
-				myStage.setScene(buildPlayScene());
-				spawnEnemies();
-				cleaningService();
+				myCurrentScene = buildPlayScene();
+				myStage.setScene(myCurrentScene);
+				gameHandler();
+				
 				
 				
 			}
@@ -162,6 +219,7 @@ public class Main extends Application{
 	
 	public Scene buildPlayScene(){
 		Pane root = new Pane();
+		myRoot = root;
 		root.setId("play-scene");
 		Scene playScene = new Scene(root, 500, 500);
 		playScene.getStylesheets().addAll(this.getClass().getResource("stylesheet.css").toExternalForm());

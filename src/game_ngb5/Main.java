@@ -150,12 +150,14 @@ public class Main extends Application{
 				}
 				myGameMillis += 10;
 				if(myHero.myLevel == 3){
+					spawnEnemies1.killSpawning();
 					spawnEnemies2.killSpawning();
-					//end game and display score
+					endGameHandler();
 				}
 				if(!myHero.myLifeStatus){
+					spawnEnemies1.killSpawning();
 					spawnEnemies2.killSpawning();
-					//end game and display score
+					endGameHandler();
 				}
 			}
 		});
@@ -169,7 +171,7 @@ public class Main extends Application{
 		KeyFrame kf = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
-				if(myGameMillis > 3000){
+				if(myGameMillis == 3000){
 					Text finalText;
 					if(myHero.myLifeStatus){
 						finalText = new Text("Welcome Home, Hero!");
@@ -182,7 +184,7 @@ public class Main extends Application{
 					
 				}
 				
-				if(myGameMillis > 8000){
+				if(myGameMillis == 8000){
 					try {
 						start(new Stage());
 					} catch (Exception e) {

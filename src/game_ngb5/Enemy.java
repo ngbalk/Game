@@ -23,15 +23,21 @@ import javafx.util.Duration;
 public class Enemy extends ImageView {
 	Hero myHero;
 	Pane myRoot;
-	Integer myHP;
+	Integer myLevel;
 	boolean myLifeStatus;
 	
 	public Enemy(Hero hero, Integer xLoc){
 		myHero = hero;
 		myRoot = hero.myRoot;
-		myHP = 100;
+		myLevel = myHero.myLevel;
 		myLifeStatus = true;
-		Image enemyImage = new Image(this.getClass().getResource("enemy_image.png").toExternalForm());
+		Image enemyImage = null;
+		if(myLevel == 1){
+			enemyImage = new Image(this.getClass().getResource("enemy_image.png").toExternalForm());
+		}
+		if(myLevel == 2){
+			enemyImage = new Image(this.getClass().getResource("enemy_image_level_2.gif").toExternalForm());
+		}
 		this.setImage(enemyImage);
 		this.setX(xLoc);
 		this.setY(-100);
@@ -41,11 +47,7 @@ public class Enemy extends ImageView {
 		
 	}
 	public void isDead(){
-		myHP = 0;
 		myLifeStatus = false;
-	}
-	public void isHit(Integer damage){
-		myHP -= damage;
 	}
 	public void attack(){
 		Timeline attackFlight = new Timeline();
@@ -86,7 +88,7 @@ public class Enemy extends ImageView {
 	public void explode(){
 		Image explosionImage = new Image(this.getClass().getResource("explosion_image.gif").toExternalForm());
 		this.setImage(explosionImage);
-		this.setY(this.getY()-50);
+		this.setY(this.getY()-100);
 		FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
 		ft.setFromValue(1.0);
 		ft.setToValue(0);

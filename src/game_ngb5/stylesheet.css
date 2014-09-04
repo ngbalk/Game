@@ -20,3 +20,9 @@
     -fx-background-size: 500 500;
     -fx-background-position: center center;
 }
+#clock {
+	-fx-font: 30px Arial;
+}
+#scoreboard {
+	-fx-font: 30px Arial;
+}

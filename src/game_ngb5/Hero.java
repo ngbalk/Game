@@ -21,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 
 public class Hero extends ImageView{
+	boolean myInvincible = false;
 	ArrayList<Missile> myMissiles;
 	ArrayList<Enemy> myEnemies;
 	Pane myRoot;
@@ -57,6 +58,9 @@ public class Hero extends ImageView{
 				if(event.getCode() == KeyCode.SPACE){
 					fireMissile();
 					
+				}
+				if(event.getCode() == KeyCode.ENTER){
+					myInvincible = true;
 				}
 			}
 		};
@@ -105,7 +109,7 @@ public class Hero extends ImageView{
 
 			@Override
 			public void handle(ActionEvent event) {
-				if(checkAndHandleCollision() && myLifeStatus){
+				if(checkAndHandleCollision() && myLifeStatus && !myInvincible){
 					myLifeStatus = false;
 					explode();
 				}	

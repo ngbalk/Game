@@ -1,6 +1,11 @@
 Back to Earth!
 ==============
 
+
+HOW TO PLAY:
+
+Play this game by clicking the start button.  Left and Right arrows will move your hero LEFT and RIGHT.  SPACE will shoot a missile.  Pressing ENTER will turn on player invincibility.
+
 This game is a verticle scroller spaceship shooter game, very similar to Galaga.  In this game, enemies (ships, aliens, etc) will scroll and move in fixed patterns down the screen as the hero (a spaceship) moves along the x axis at the bottom of the screen, shooting up to destroy the enemies while also avoiding them from hitting it. 
 
 Be a hero!  Get back to Earth!   The lone hero trapped in deep space only has the help of his high-tech spaceship to destroy and avoid the enemies and get back home!

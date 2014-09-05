@@ -7,6 +7,7 @@ import com.sun.javafx.jmx.MXNodeAlgorithmContext;
 import com.sun.javafx.sg.prism.NGNode;
 
 import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
@@ -48,8 +49,9 @@ public class Missile extends ImageView{
 		else{
 			myHero.myScore = myHero.myScore + (1000 * myHero.myLevel);
 		}
-		
+		myRoot.getChildren().remove(this);
 		myLifeStatus = false;
+		explode();
 	}
 	public void move(){
 		this.setY(this.getY()-10);
@@ -67,7 +69,6 @@ public class Missile extends ImageView{
 					System.out.println("missile hit");
 					missileFlight.stop();
 				}
-				
 			}
 			
 		});
@@ -79,10 +80,25 @@ public class Missile extends ImageView{
 			if(this.intersects(enemy.getBoundsInLocal())){
 					this.setVisible(false);
 					impact();
+					enemy.enemyHit();;
 					return true;
 				}
 		}
 		return false;
+	}
+	public void explode(){
+		double currentX = this.getX();
+		double currentY = this.getY();
+		Image explosionImage = new Image(this.getClass().getResource("explosion_image.gif").toExternalForm());
+		ImageView explosion = new ImageView();
+		myRoot.getChildren().add(explosion);
+		explosion.setImage(explosionImage);
+		explosion.setX(currentX);
+		explosion.setY(currentY - 150);
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), explosion);
+		ft.setFromValue(1.0);
+		ft.setToValue(0);
+		ft.play();	
 	}
 
 

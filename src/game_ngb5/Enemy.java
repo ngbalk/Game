@@ -21,6 +21,7 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class Enemy extends ImageView {
+	Timeline myAttackFlight;
 	String myBossDirection;
 	Integer myHP;
 	Hero myHero;
@@ -66,42 +67,44 @@ public class Enemy extends ImageView {
 	}
 	public void attack(){
 		Timeline attackFlight = new Timeline();
+		myAttackFlight = attackFlight;
 		attackFlight.setCycleCount(Animation.INDEFINITE);
 		KeyFrame kf = new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>(){
 
 			@Override
 			public void handle(ActionEvent event) {
 				move();
-				if(checkAndHandleCollision()){
-					attackFlight.stop();
-					
-				}
-
-				
 			}
 			
 		});
 		attackFlight.getKeyFrames().add(kf);
 		attackFlight.play();
 	}
-	public boolean checkAndHandleCollision(){
-		for(Missile missile : myHero.myMissiles){
-	        if((this.getLayoutBounds().intersects(missile.getBoundsInLocal()) || this.getY() > 1000)) // && myLifeStatus && missile.myLifeStatus)
-	                {
-	        			enemyHit();
-	        			if(myHP <= 0){
-	        				myLifeStatus = false;
-	        				explode();
-	        				return true;
-	        				
-	        			}
-	        			return false;
-	                }
-		}
-        return false;
-	}
+//	public boolean checkAndHandleCollision(){
+//		for(Missile missile : myHero.myMissiles){
+//	        if((this.getLayoutBounds().intersects(missile.getBoundsInLocal()) || this.getY() > 1000)) // && myLifeStatus && missile.myLifeStatus)
+//	                {
+//	        			enemyHit();
+//	        			if(myHP <= 0){
+//	        				myLifeStatus = false;
+//	        				explode();
+//	        				return true;
+//	        				
+//	        			}
+//	        			return false;
+//	                }
+//		}
+//        return false;
+//	}
 	public void enemyHit(){
 		myHP = myHP - 10;
+		if(myHP<=0){
+			die();
+			explode();
+		}
+		else{
+			explode();
+		}
 	}
 	public void bossAttack(){
 		Timeline bossAttackFlight = new Timeline();
@@ -110,13 +113,7 @@ public class Enemy extends ImageView {
 
 			@Override
 			public void handle(ActionEvent event) {
-				bossMove();
-				if(checkAndHandleCollision()){
-					bossAttackFlight.stop();
-					
-				}
-
-				
+				bossMove();				
 			}
 			
 		});
@@ -146,15 +143,24 @@ public class Enemy extends ImageView {
 	public void move(){
 		this.setY(this.getY()+5);
 	}
+	public void die(){
+		myLifeStatus = false;
+		myRoot.getChildren().remove(this);
+		
+	}
 	public void explode(){
+		double currentX = this.getX();
+		double currentY = this.getY();
 		Image explosionImage = new Image(this.getClass().getResource("explosion_image.gif").toExternalForm());
-		this.setImage(explosionImage);
-		this.setY(this.getY()-100);
-		FadeTransition ft = new FadeTransition(Duration.millis(1000), this);
+		ImageView explosion = new ImageView();
+		myRoot.getChildren().add(explosion);
+		explosion.setImage(explosionImage);
+		explosion.setX(currentX);
+		explosion.setY(currentY - 100);
+		FadeTransition ft = new FadeTransition(Duration.millis(1000), explosion);
 		ft.setFromValue(1.0);
 		ft.setToValue(0);
-		ft.play();
-		
+		ft.play();	
 	}
 }
 	

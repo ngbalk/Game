@@ -26,3 +26,6 @@
 #scoreboard {
 	-fx-font: 30px Arial;
 }
+#instructions {
+	-fx-font: 20px Arial;
+}

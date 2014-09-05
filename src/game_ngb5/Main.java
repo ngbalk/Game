@@ -74,6 +74,7 @@ public class Main extends Application{
 		scene.getStylesheets().add(Main.class.getResource("stylesheet.css").toExternalForm());
 		stage.setTitle("Back to Earth!");
 		addWelcomeText(gp);
+		addInstructionText(gp);
 		addStartButton(gp);
 		stage.setScene(scene);
 		myCurrentScene = scene;
@@ -81,12 +82,21 @@ public class Main extends Application{
 	}
 	public void addWelcomeText(Pane gp){
 		
-		Text text = new Text();
-		text.setText("Back to Earth!");
-		text.setId("splash-page");
-		text.setLayoutX(100);
-		text.setLayoutY(250);
-		gp.getChildren().add(text);
+		Text title = new Text();
+		title.setText("Back to Earth!");
+		title.setId("splash-page");
+		title.setLayoutX(100);
+		title.setLayoutY(250);
+		gp.getChildren().add(title);
+	}
+	public void addInstructionText(Pane gp){
+		Text instructions = new Text();
+		instructions.setText("SPACE to shoot, ARROWS to move \n Stay alive and get back to Earth!");
+		instructions.setId("instructions");
+		instructions.setFill(Color.WHITE);
+		instructions.setLayoutX(100);
+		instructions.setLayoutY(400);
+		gp.getChildren().add(instructions);
 	}
 	public void addStartButton(Pane gp){
 		Button startButton = new Button();

@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Game {
+	Enemy myBoss; 
 	Timeline myGameCycler;
 	Spawner myCurrentSpawner;
 	Integer myGameTimer;
@@ -79,18 +80,21 @@ public class Game {
 			myHero.myLevel ++;
 			Enemy boss = new Enemy(myHero, 100);
 			myHero.myEnemies.add(boss);
-		}
-		if(myGameTimer == 50000){
-			myCurrentSpawner.killSpawning();
-			myHero.myLevel++;
+			myBoss = boss;
 			
+		}
+		if(myGameTimer > 40000){
+			if(!myBoss.myLifeStatus){
+				myCurrentSpawner.killSpawning();
+				myHero.myLevel++;
+			}
 		}
 		
 	}
 	public void cleaningService(){
 		Timeline cleaning = new Timeline();
 		cleaning.setCycleCount(Animation.INDEFINITE);
-		KeyFrame kf = new KeyFrame(Duration.millis(1000), new EventHandler<ActionEvent>(){
+		KeyFrame kf = new KeyFrame(Duration.millis(5), new EventHandler<ActionEvent>(){
 			@Override
 			public void handle(ActionEvent event) {
 				cleanDeadEnemiesAndMissiles();

@@ -21,12 +21,15 @@ import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class Enemy extends ImageView {
+	String myBossDirection;
+	Integer myHP;
 	Hero myHero;
 	Pane myRoot;
 	Integer myLevel;
 	boolean myLifeStatus;
 	
 	public Enemy(Hero hero, Integer xLoc){
+
 		myHero = hero;
 		myRoot = hero.myRoot;
 		myLevel = myHero.myLevel;
@@ -38,12 +41,24 @@ public class Enemy extends ImageView {
 		if(myLevel == 2){
 			enemyImage = new Image(this.getClass().getResource("enemy_image_level_2.gif").toExternalForm());
 		}
+		if(myLevel == 3){
+			enemyImage = new Image(this.getClass().getResource("boss_image.png").toExternalForm());
+		}
 		this.setImage(enemyImage);
 		this.setX(xLoc);
-		this.setY(-100);
-		myRoot.getChildren().add(this);
-		attack();
 		
+		myRoot.getChildren().add(this);
+		if(myLevel == 3){
+			this.setY(-400);
+			myHP = 100;
+			myBossDirection = "right";
+			bossAttack();
+		}
+		else{
+			this.setY(-100);
+			myHP = 10;
+			attack();
+		}
 		
 	}
 	public void isDead(){
@@ -73,15 +88,61 @@ public class Enemy extends ImageView {
 		for(Missile missile : myHero.myMissiles){
 	        if((this.getLayoutBounds().intersects(missile.getBoundsInLocal()) || this.getY() > 1000)) // && myLifeStatus && missile.myLifeStatus)
 	                {
-	        			
-	        			explode();
-	                    myLifeStatus = false;
-	                    return true;
+	        			enemyHit();
+	        			if(myHP <= 0){
+	        				myLifeStatus = false;
+	        				explode();
+	        				return true;
+	        				
+	        			}
+	        			return false;
 	                }
 		}
         return false;
 	}
+	public void enemyHit(){
+		myHP = myHP - 10;
+	}
+	public void bossAttack(){
+		Timeline bossAttackFlight = new Timeline();
+		bossAttackFlight.setCycleCount(Animation.INDEFINITE);
+		KeyFrame kf = new KeyFrame(Duration.millis(35), new EventHandler<ActionEvent>(){
+
+			@Override
+			public void handle(ActionEvent event) {
+				bossMove();
+				if(checkAndHandleCollision()){
+					bossAttackFlight.stop();
+					
+				}
+
+				
+			}
+			
+		});
+		bossAttackFlight.getKeyFrames().add(kf);
+		bossAttackFlight.play();
 		
+	}
+	public void bossMove(){
+		if(this.getY()< -300){
+			this.setY(this.getY()+5);
+		}
+		if(this.getX()>= -300 && this.myBossDirection == "left"){
+			this.setX(this.getX() - 5);
+		}
+		else if(this.getX()< -300 && this.myBossDirection == "left"){
+			this.setX(this.getX() + 5);
+			this.myBossDirection = "right";
+		}
+		else if(this.getX()<= 200 && this.myBossDirection == "right"){
+			this.setX(this.getX() + 5);
+		}
+		else if(this.getX()> 200 && this.myBossDirection == "right"){
+			this.setX(this.getX() - 5);
+			this.myBossDirection = "left";
+		}
+	}
 	public void move(){
 		this.setY(this.getY()+5);
 	}

@@ -46,7 +46,7 @@ public class Game {
 				handleLevelUp();
 				manageGameClock();
 				manageScoreboard();
-				if(myHero.myLevel == 3 || !myHero.myLifeStatus){
+				if(myHero.myLevel == 4 || !myHero.myLifeStatus){
 						endGameHandler();
 				}
 				myGameTimer += 10;	
@@ -65,19 +65,25 @@ public class Game {
 		Scene toSetScene = buildGameScene();
 		buildHero();
 		myStage.setScene(toSetScene);
-
 	}
 	
 	public void handleLevelUp(){
-		if(myGameTimer == 30000){
+		if(myGameTimer == 20000){
 			myCurrentSpawner.killSpawning();
 			myHero.myLevel++;
 			myCurrentSpawner = new Spawner(myHero);
 			myCurrentSpawner.playSpawning();
 		}
-		if(myGameTimer == 60000){
+		if(myGameTimer == 40000){
 			myCurrentSpawner.killSpawning();
 			myHero.myLevel ++;
+			Enemy boss = new Enemy(myHero, 100);
+			myHero.myEnemies.add(boss);
+		}
+		if(myGameTimer == 50000){
+			myCurrentSpawner.killSpawning();
+			myHero.myLevel++;
+			
 		}
 		
 	}
@@ -189,6 +195,4 @@ public class Game {
 		myScoreboard.setFill(Color.WHITE);
 		myRoot.getChildren().add(myScoreboard);
 	}
-	
-	
 }

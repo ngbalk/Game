@@ -42,7 +42,13 @@ public class Missile extends ImageView{
 		myRoot.getChildren().add(this);
 	}
 	public void impact(){
-		myHero.myScore = myHero.myScore + (1000 * myHero.myLevel);
+		if(myHero.myLevel == 3){
+			myHero.myScore = myHero.myScore + 10000;
+		}
+		else{
+			myHero.myScore = myHero.myScore + (1000 * myHero.myLevel);
+		}
+		
 		myLifeStatus = false;
 	}
 	public void move(){

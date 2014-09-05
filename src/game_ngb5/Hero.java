@@ -1,20 +1,12 @@
 package game_ngb5;
 
-
-import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Deque;
 
-import com.sun.javafx.geom.BaseBounds;
-import com.sun.javafx.geom.transform.BaseTransform;
-import com.sun.javafx.jmx.MXNodeAlgorithm;
-import com.sun.javafx.jmx.MXNodeAlgorithmContext;
-import com.sun.javafx.sg.prism.NGNode;
 
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
-import javafx.animation.PathTransition;
+
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
@@ -26,10 +18,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.LineTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.util.Duration;
 
 public class Hero extends ImageView{
@@ -61,18 +49,15 @@ public class Hero extends ImageView{
 			@Override
 			public void handle(KeyEvent event) {
 				if(event.getCode() == KeyCode.RIGHT){
-					
 					moveRight();
 				}
 				if(event.getCode() == KeyCode.LEFT){
-					
 					moveLeft();
 				}
 				if(event.getCode() == KeyCode.SPACE){
 					fireMissile();
 					
 				}
-					
 			}
 		};
 		this.setFocusTraversable(true);
@@ -84,8 +69,6 @@ public class Hero extends ImageView{
 	}
 	
 
-		
-	
 	public void moveRight(){
 		if(this.getX() < 420){
 			System.out.println("Going Right...");
@@ -114,8 +97,6 @@ public class Hero extends ImageView{
 		Missile missile = new Missile(this);
 		myMissiles.add(missile);
 		missile.fire();
-		
-		
 	}
 	public void collisionsEngine(){
 		Timeline missileFlight = new Timeline();
@@ -125,14 +106,10 @@ public class Hero extends ImageView{
 			@Override
 			public void handle(ActionEvent event) {
 				if(checkAndHandleCollision() && myLifeStatus){
-					
 					myLifeStatus = false;
 					explode();
-					
-				}
-				
+				}	
 			}
-			
 		});
 		missileFlight.getKeyFrames().add(kf);
 		missileFlight.play();
@@ -153,6 +130,5 @@ public class Hero extends ImageView{
 		ft.setFromValue(1.0);
 		ft.setToValue(0);
 		ft.play();
-		
 	}
 }

@@ -56,6 +56,4 @@ public class Spawner{
 	public void playSpawning(){
 		this.mySpawning.play();
 	}
-	
-
 }

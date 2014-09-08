@@ -78,7 +78,8 @@ public class Game {
 		if(myGameTimer == 40000){
 			myCurrentSpawner.killSpawning();
 			myHero.myLevel ++;
-			Enemy boss = new Enemy(myHero, 100);
+			Boss boss = new Boss(myHero, 100, -400, 200);
+			boss.attack();
 			myHero.myEnemies.add(boss);
 			myBoss = boss;
 			

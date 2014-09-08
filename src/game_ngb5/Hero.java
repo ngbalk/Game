@@ -93,9 +93,7 @@ public class Hero extends ImageView{
 	public void shotFired(){
 		myAmmo = myAmmo - 1;
 	}
-	public boolean hasAmmo(){
-		return myAmmo != 0;
-	}
+
 	public void fireMissile(){
 		System.out.println("Firing missile...");
 		Missile missile = new Missile(this);

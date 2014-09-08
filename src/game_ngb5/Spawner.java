@@ -38,8 +38,18 @@ public class Spawner{
 			public void handle(ActionEvent event) {
 				Integer xLoc = attackPattern.poll();
 				attackPattern.add(xLoc);
-				Enemy enemy = new Enemy(myHero, xLoc);
-				myHero.myEnemies.add(enemy);
+				if(myLevel == 1){
+					Drone drone = new Drone(myHero, xLoc, -100, 10);
+					drone.attack();
+					myHero.myEnemies.add(drone);
+				}
+				if(myLevel == 2){
+					Elite elite = new Elite(myHero, xLoc, -100, 20);
+					elite.attack();
+					myHero.myEnemies.add(elite);
+				}
+				
+				
 			}
 		});
 		spawning.getKeyFrames().add(kf);
